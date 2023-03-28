@@ -1,0 +1,5 @@
+D:\Temp\testingApp\Assignment1.exe
+D:\Temp\testingApp\Assignment1.dll
+D:\Temp\testingApp\Assignment1.deps.json
+D:\Temp\testingApp\Assignment1.runtimeconfig.json
+D:\Temp\testingApp\Assignment1.pdb
