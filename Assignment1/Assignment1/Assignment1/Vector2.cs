@@ -23,6 +23,9 @@ namespace Assignment1
             this.y = y;
         }
 
+        public float X { get => x; set => x = value; }
+        public float Y { get => y; set => y = value; }
+
         public static float Distance(Vector2 v1, Vector2 v2)
         {
             return MathF.Sqrt(MathF.Pow(v2.x - v1.x, 2) + MathF.Pow(v2.y - v1.y, 2));
