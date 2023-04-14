@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Assignment1": {
+      "commandName": "Project",
+      "commandLineArgs": "RobotNav-test.txt\r\nsearchBasic\r\nBFS"
+    }
+  }
+}

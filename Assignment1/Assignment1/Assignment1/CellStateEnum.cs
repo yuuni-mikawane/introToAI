@@ -5,5 +5,7 @@
         Wall,
         Traversable,
         Goal,
+        Start,
+        Traversed,
     }
 }
