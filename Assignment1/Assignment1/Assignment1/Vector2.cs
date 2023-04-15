@@ -26,5 +26,10 @@ namespace Assignment1
         {
             return string.Format("({0},{1})", x, y);
         }
+        public static int GetManhattanDistance(Vector2 a, Vector2 b)
+        {
+            return Math.Abs(a.x - b.x) +
+                Math.Abs(a.y - b.y);
+        }
     }
 }

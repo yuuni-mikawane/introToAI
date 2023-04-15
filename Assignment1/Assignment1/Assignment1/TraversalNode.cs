@@ -12,6 +12,8 @@ namespace Assignment1
         public int nodeState;
         public TraversalNode? parent;
         public string pathMsg;
+        public int heuristicValue;
+        public int cost;
 
         public TraversalNode(Vector2 coordinate, int nodeState, TraversalNode? parent = null, string pathMsg = "")
         {
@@ -19,6 +21,8 @@ namespace Assignment1
             this.nodeState = nodeState;
             this.parent = parent;
             this.pathMsg = pathMsg;
+            heuristicValue = 0;
+            cost = 1;
         }
     }
 }

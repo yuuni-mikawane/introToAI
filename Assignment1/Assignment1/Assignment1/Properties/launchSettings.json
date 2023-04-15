@@ -1,8 +1,20 @@
 {
   "profiles": {
-    "Assignment1": {
+    "GBFS": {
+      "commandName": "Project",
+      "commandLineArgs": "RobotNav-test.txt\r\nsearchBasic\r\nGBFS"
+    },
+    "BFS": {
       "commandName": "Project",
       "commandLineArgs": "RobotNav-test.txt\r\nsearchBasic\r\nBFS"
+    },
+    "DFS": {
+      "commandName": "Project",
+      "commandLineArgs": "RobotNav-test.txt\r\nsearchBasic\r\nDFS"
+    },
+    "AStar": {
+      "commandName": "Project",
+      "commandLineArgs": "RobotNav-test.txt\r\nsearchBasic\r\nAS"
     }
   }
 }

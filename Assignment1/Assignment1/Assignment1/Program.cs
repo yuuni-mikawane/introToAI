@@ -18,14 +18,44 @@ class MainClass
         //result variables
         TraversalNode? result = null;
         int numberOfNodes = 0;
+        Agent agent;
 
         //search option for BFS
         if (args[2] == "BFS")
         {
-            BFSAgent bfs = new BFSAgent(map);
-            result = bfs.Search();
-            numberOfNodes = bfs.numberOfNodes;
+            agent = new BFSAgent(map);
         }
+        //DFS
+        else if (args[2] == "DFS")
+        {
+            agent = new DFSAgent(map);
+        }
+        //GBFS
+        else if (args[2] == "GBFS")
+        {
+            agent = new GBFSAgent(map);
+        }
+        //AStar
+        else if (args[2] == "AS")
+        {
+            agent = new AStarAgent(map);
+        }
+        else if (args[2] == "CUS1")
+        {
+
+        }
+        else if (args[2] == "CUS2")
+        {
+
+        }
+        else
+        {
+            agent = new BFSAgent(map);
+        }
+
+        //perform the search
+        result = agent.Search();
+        numberOfNodes = agent.numberOfNodes;
 
         //result printing
         Console.WriteLine(path + " " + args[2] + " NodeCount:" + numberOfNodes);

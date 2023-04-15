@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Assignment1
 {
-    public class BFSAgent : Agent
+    public class DFSAgent : Agent
     {
-        public BFSAgent(Map currentMap) : base(currentMap)
+        public DFSAgent(Map currentMap) : base(currentMap)
         {
         }
 
@@ -19,9 +19,9 @@ namespace Assignment1
 
             //search loop
             TraversalNode currentNode = null;
-            while(frontier.Count != 0)
+            while (frontier.Count != 0)
             {
-                currentNode = frontier.First();
+                currentNode = frontier.Last();
                 numberOfNodes++;
 
                 //a goal is reached?
@@ -31,10 +31,10 @@ namespace Assignment1
                 //mark as visited/traversed
                 currentMap.VisitNode(currentNode);
                 //remove current node
-                frontier.RemoveFirst();
+                frontier.RemoveLast();
 
                 //expand to adjacent nodes (children/leaf nodes)
-                foreach (TraversalNode node in currentMap.ExpandNode(currentNode))
+                foreach (TraversalNode node in currentMap.ExpandNode(currentNode).Reverse())
                 {
                     frontier.AddLast(node);
                 }

@@ -41,7 +41,8 @@ namespace Assignment1
             //go up
             if (y != 0)
             {
-                if (cellsState[x, y - 1] != (int)CellState.Wall && cellsState[x, y - 1] != (int)CellState.Traversed)
+                if (cellsState[x, y - 1] == (int)CellState.Goal ||
+                    cellsState[x, y - 1] == (int)CellState.Traversable)
                 {
                     tempCoordinate = new Vector2(x, y - 1);
                     tempNode = new TraversalNode(tempCoordinate, cellsState[x, y - 1], currentNode, "up");
@@ -51,7 +52,8 @@ namespace Assignment1
             //go left
             if (x != 0)
             {
-                if (cellsState[x - 1, y] != (int)CellState.Wall && cellsState[x - 1, y] != (int)CellState.Traversed)
+                if (cellsState[x - 1, y] == (int)CellState.Goal ||
+                    cellsState[x - 1, y] == (int)CellState.Traversable)
                 {
                     tempCoordinate = new Vector2(x - 1, y);
                     tempNode = new TraversalNode(tempCoordinate, cellsState[x - 1, y], currentNode, "left");
@@ -61,7 +63,8 @@ namespace Assignment1
             //go down
             if (y != mapSize.y - 1)
             {
-                if (cellsState[x, y + 1] != (int)CellState.Wall && cellsState[x, y + 1] != (int)CellState.Traversed)
+                if (cellsState[x, y + 1] == (int)CellState.Goal ||
+                    cellsState[x, y + 1] == (int)CellState.Traversable)
                 {
                     tempCoordinate = new Vector2(x, y + 1);
                     tempNode = new TraversalNode(tempCoordinate, cellsState[x, y + 1], currentNode, "down");
@@ -71,7 +74,8 @@ namespace Assignment1
             //go right
             if (x != mapSize.x - 1)
             {
-                if(cellsState[x + 1, y] != (int)CellState.Wall && cellsState[x + 1, y] != (int)CellState.Traversed)
+                if (cellsState[x + 1, y] == (int)CellState.Goal ||
+                    cellsState[x + 1, y] == (int)CellState.Traversable)
                 {
                     tempCoordinate = new Vector2(x + 1, y);
                     tempNode = new TraversalNode(tempCoordinate, cellsState[x + 1, y], currentNode, "right");
@@ -81,38 +85,9 @@ namespace Assignment1
             return adjacentNodes;
         }
 
-        public TraversalNode? Move(Vector2 currentCoordinate, Direction dir)
+        public void VisitNode(TraversalNode node)
         {
-            Vector2 nodeCoordinate = new Vector2(currentCoordinate.x, currentCoordinate.y);
-            switch (dir)
-            {
-                case Direction.Up:
-                    if (currentCoordinate.y == 0)
-                        return null;
-                    else
-                        nodeCoordinate.y--;
-                    break;
-                case Direction.Left:
-                    if (currentCoordinate.x == 0)
-                        return null;
-                    else
-                        nodeCoordinate.x--;
-                    break;
-                case Direction.Down:
-                    if (currentCoordinate.y == mapSize.y - 1)
-                        return null;
-                    else
-                        nodeCoordinate.y++;
-                    break;
-                case Direction.Right:
-                    if (currentCoordinate.x == mapSize.x - 1)
-                        return null;
-                    else
-                        nodeCoordinate.x++;
-                    break;
-            }
-
-            return new TraversalNode(nodeCoordinate, cellsState[nodeCoordinate.x, nodeCoordinate.y]);
+            cellsState[node.coordinate.x, node.coordinate.y] = (int)CellState.Visited;
         }
         public void DrawMap(Map map)
         {

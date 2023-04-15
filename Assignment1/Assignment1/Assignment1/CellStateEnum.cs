@@ -6,6 +6,6 @@
         Traversable,
         Goal,
         Start,
-        Traversed,
+        Visited,
     }
 }
