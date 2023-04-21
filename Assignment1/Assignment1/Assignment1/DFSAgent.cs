@@ -12,29 +12,41 @@ namespace Assignment1
         {
         }
 
-        public override TraversalNode? Search()
+        public override TraversalNode? Search(bool drawMap = false)
         {
+            //set an array of specially allowed states that can be expanded to by this agent
+            int[] specialStates = { (int)CellState.Explored };
+
             //initialize frontier
             frontier.AddFirst(currentMap.GetStartingNode());
 
             //search loop
-            TraversalNode currentNode = null;
+            TraversalNode? currentNode = null;
             while (frontier.Count != 0)
             {
                 currentNode = frontier.Last();
+                
                 numberOfNodes++;
-
                 //a goal is reached?
-                if (currentNode.nodeState == (int)CellState.Goal)
+                if (currentNode.isGoal)
                     break;
 
-                //mark as visited/traversed
+                //mark as visiting
                 currentMap.VisitNode(currentNode);
+
+                if (drawMap)
+                {
+                    currentMap.DrawMap();
+                }
+
+
+                //mark as visited
+                currentMap.LeaveNode(currentNode);
                 //remove current node
                 frontier.RemoveLast();
 
                 //expand to adjacent nodes (children/leaf nodes)
-                foreach (TraversalNode node in currentMap.ExpandNode(currentNode).Reverse())
+                foreach (TraversalNode node in currentMap.ExpandAllPossibleNodes(currentNode, specialStates).Reverse())
                 {
                     frontier.AddLast(node);
                 }

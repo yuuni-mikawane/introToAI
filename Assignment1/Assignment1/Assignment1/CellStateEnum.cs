@@ -7,5 +7,10 @@
         Goal,
         Start,
         Visited,
+        Visiting,
+        Explored,
+        Solution,
+        Visited1,
+        Visited2,
     }
 }

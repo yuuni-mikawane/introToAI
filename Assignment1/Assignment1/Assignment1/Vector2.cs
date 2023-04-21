@@ -17,6 +17,17 @@ namespace Assignment1
             this.y = y;
         }
 
+        
+        public static bool operator ==(Vector2 a, Vector2 b)
+        {
+            return a.x == b.x && a.y == b.y;
+        }
+
+        public static bool operator !=(Vector2 a, Vector2 b)
+        {
+            return a.x != b.x || a.y != b.y;
+        }
+
         public static float Distance(Vector2 v1, Vector2 v2)
         {
             return MathF.Sqrt(MathF.Pow(v2.x - v1.x, 2) + MathF.Pow(v2.y - v1.y, 2));
@@ -30,6 +41,23 @@ namespace Assignment1
         {
             return Math.Abs(a.x - b.x) +
                 Math.Abs(a.y - b.y);
+        }
+
+        public static float GetEuclideanDistance(Vector2 a, Vector2 b)
+        {
+            return MathF.Sqrt((MathF.Pow(a.x - b.x, 2) + MathF.Pow(a.y - b.y, 2)));
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Vector2 vector &&
+                   x == vector.x &&
+                   y == vector.y;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(x, y);
         }
     }
 }

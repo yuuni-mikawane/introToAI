@@ -12,17 +12,26 @@ namespace Assignment1
         public int nodeState;
         public TraversalNode? parent;
         public string pathMsg;
-        public int heuristicValue;
+        public float heuristicValue;
         public int cost;
+        public int localCost;
+        public bool isGoal;
+        public int currenThreshold;
 
-        public TraversalNode(Vector2 coordinate, int nodeState, TraversalNode? parent = null, string pathMsg = "")
+        public TraversalNode(Vector2 coordinate, int nodeState, TraversalNode? parent = null, string pathMsg = "", bool isGoal = false)
         {
             this.coordinate = coordinate;
             this.nodeState = nodeState;
             this.parent = parent;
             this.pathMsg = pathMsg;
             heuristicValue = 0;
-            cost = 1;
+            localCost = 1;
+            if (parent != null)
+                cost = localCost + parent.cost;
+            else
+                cost = 1;
+            this.isGoal = isGoal;
+            currenThreshold = 0;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Assignment1
         {
         }
 
-        public override TraversalNode? Search()
+        public override TraversalNode? Search(bool drawMap = false)
         {
             //find the closest goal to the start position and set as targeted goal
             Vector2 targetGoal = currentMap.goalPositions[0];
@@ -30,9 +30,10 @@ namespace Assignment1
             frontier.First().heuristicValue = Vector2.GetManhattanDistance(startPosition, frontier.First().coordinate);
 
             //search loop
-            TraversalNode currentNode = null;
+            TraversalNode? currentNode = null;
             while (frontier.Count != 0)
             {
+
                 //get the node in the frontier with minimum heuristic value (min manhattan distance)
                 int minHeuristicInFrontier = -1;
                 foreach (TraversalNode node in frontier)
@@ -40,27 +41,36 @@ namespace Assignment1
                     if (minHeuristicInFrontier == -1)
                     {
                         currentNode = node;
-                        minHeuristicInFrontier = node.heuristicValue;
+                        minHeuristicInFrontier = (int)node.heuristicValue;
                     }
                     else if (minHeuristicInFrontier > node.heuristicValue)
                     {
                         currentNode = node;
-                        minHeuristicInFrontier = node.heuristicValue;
+                        minHeuristicInFrontier = (int)node.heuristicValue;
                     }
                 }
                 numberOfNodes++;
 
-                //a goal is reached?
-                if (currentNode.nodeState == (int)CellState.Goal)
+                //the goal is reached?
+                if (currentNode!.coordinate == targetGoal)
                     break;
 
-                //mark as visited/traversed on the map
+                //mark as visiting
                 currentMap.VisitNode(currentNode);
+
+                if (drawMap)
+                {
+                    currentMap.DrawMap();
+                }
+
+
+                //mark as visited/traversed on the map
+                currentMap.LeaveNode(currentNode);
                 //remove current node
                 frontier.Remove(currentNode);
 
                 //expand to adjacent nodes (children/leaf nodes)
-                foreach (TraversalNode node in currentMap.ExpandNode(currentNode))
+                foreach (TraversalNode node in currentMap.ExpandAllPossibleNodes(currentNode))
                 {
                     node.heuristicValue = Vector2.GetManhattanDistance(node.coordinate, targetGoal);
                     frontier.AddLast(node);

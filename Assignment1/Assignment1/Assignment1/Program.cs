@@ -6,19 +6,19 @@ class MainClass
     static void Main(string[] args)
     {
         //reading content from text file
-        string path = "RobotNav-test.txt";
-        if (args.Length == 2)
-            path = args[0];
+        string path = args[0];
         StreamReader reader = new StreamReader(path);
         string content = reader.ReadToEnd();
         reader.Close();
 
-        Map map = GenerateMap(content);
+        Map map = GenerateMapWithData(content);
+        bool quit = false;
 
         //result variables
         TraversalNode? result = null;
         int numberOfNodes = 0;
-        Agent agent;
+        Agent? agent = new BFSAgent(map);
+        bool GUIMode = false;
 
         //search option for BFS
         if (args[2] == "BFS")
@@ -42,51 +42,62 @@ class MainClass
         }
         else if (args[2] == "CUS1")
         {
-
+            agent = new Cus1Agent(map);
         }
         else if (args[2] == "CUS2")
         {
-
+            agent = new Cus2Agent(map);
         }
+        //GUI mode condition
         else
         {
-            agent = new BFSAgent(map);
+            GUIMode = true;
         }
 
-        //perform the search
-        result = agent.Search();
-        numberOfNodes = agent.numberOfNodes;
-
-        //result printing
-        Console.WriteLine(path + " " + args[2] + " NodeCount:" + numberOfNodes);
-        if (result != null)
+        //basic searches with no GUI
+        if (!GUIMode)
         {
-            PrintPath(result);
+            //perform the search
+            result = agent.Search();
+            numberOfNodes = agent.numberOfNodes;
+
+            //result printing
+            Console.WriteLine(path + " " + args[2] + " NodeCount:" + numberOfNodes);
+            if (result != null && result.isGoal)
+            {
+                PrintPathText(result);
+            }
+            else
+            {
+                Console.WriteLine("No path found!");
+            }
         }
+        //GUI rendering
         else
         {
-            Console.WriteLine("No path found");
+            map.DrawMap();
+            while(true)
+            {
+                agent = PromptOptionsAndCreateAgent(map);
+                map.nodeTraversed = 0;
+                map.nodeExpanded = 0;
+                map.GenerateMap();
+                result = agent.Search(true);
+                if (result != null && result.isGoal)
+                {
+                    DrawPath(result, map, 5);
+                }
+                else
+                {
+                    Console.WriteLine("No path found!");
+                }
+            }
         }
+        
     }
 
-    static void PrintPath(TraversalNode node)
-    {
-        //path stack
-        Stack<String> stack = new Stack<String>();
 
-        while (node != null)
-        {
-            stack.Push(node.pathMsg);
-            node = node.parent;
-        }
-
-        while (stack.Count > 0)
-        {
-            Console.Write(stack.Pop() + "; ");
-        }
-    }
-
-    static Map GenerateMap(string content)
+    static Map GenerateMapWithData(string content)
     {
         //process text file - initial line split
         string[] lines = content.Split(
@@ -127,45 +138,72 @@ class MainClass
                 Int32.Parse(wallsString[2]), Int32.Parse(wallsString[3])));
         }
 
-        //create the matrix of node states, every node is traversable by default
-        int[,] nodes = new int[mapSize.x, mapSize.y];
-        for (int i = 0; i < mapSize.x * mapSize.y; i++)
-        {
-            nodes[i % mapSize.x, i / mapSize.x] = (int)CellState.Traversable;
-        }
-
-        //populate map with walls
-        foreach (Wall wall in wallsPos)
-        {
-
-            for (int x = wall.TopLeftPivotPos.x; x < wall.TopLeftPivotPos.x + wall.Width; x++)
-            {
-                for (int y = wall.TopLeftPivotPos.y; y < wall.TopLeftPivotPos.y + wall.Height; y++)
-                {
-                    nodes[x, y] = (int)CellState.Wall;
-                }
-            }
-        }
-
-        //populate map with goals
-        foreach (Vector2 goal in goalPosArray)
-        {
-            nodes[goal.x, goal.y] = (int)CellState.Goal;
-        }
-
+        
         //create the map object
-        return new Map(nodes, startPos, goalPosArray);
-
-        //double checking processed data
-        //Console.WriteLine("Map size: " + mapSize);
-        //Console.WriteLine("Start pos: " + startPos);
-
-        //Console.WriteLine("List of walls:");
-        //foreach (Wall wallpos in wallsPos)
-        //{
-        //    Console.WriteLine("Pos: " + wallpos.TopLeftPivotPos + " Width: " + wallpos.Width + " Height: " + wallpos.Height);
-        //}
+        return new Map(mapSize, startPos, goalPosArray, wallsPos);
     }
 
+    static void PrintPathText(TraversalNode? node)
+    {
+        //path stack
+        Stack<string> stack = new Stack<string>();
+
+        while (node != null)
+        {
+            stack.Push(node.pathMsg);
+            node = node.parent;
+        }
+
+        while (stack.Count > 0)
+        {
+            Console.Write(stack.Pop());
+        }
+    }
+
+    static void DrawPath(TraversalNode? node, Map map, int delay = 50)
+    {
+        while (node != null)
+        {
+            map.MarkNodeAsSolution(node);
+            map.DrawMap(delay);
+            node = node.parent;
+        }
+    }
     
+    static Agent? PromptOptionsAndCreateAgent(Map map)
+    {
+        while (true)
+        {
+            Console.WriteLine("\n===========\nChoose options by pressing a number key:\n1.BFS\n2.DFS\n3.GBFS\n4.AS\n5.Dijkstra\n6.Iterative Deepening A*\n9.Quit");
+            var input = Console.ReadKey();
+            Console.Clear();
+            switch (input.KeyChar)
+            {
+                case '1':
+                    map.agentName = "BFS";
+                    return new BFSAgent(map);
+                case '2':
+                    map.agentName = "DFS";
+                    return new DFSAgent(map);
+                case '3':
+                    map.agentName = "GBFS";
+                    return new GBFSAgent(map);
+                case '4':
+                    map.agentName = "A*";
+                    return new AStarAgent(map);
+                case '5':
+                    map.agentName = "Dijkstra";
+                    return new Cus1Agent(map);
+                case '6':
+                    map.agentName = "IDA*";
+                    return new Cus2Agent(map);
+                case '9':
+                    Environment.Exit(0);
+                    return new Cus2Agent(map);
+                default:
+                    Console.WriteLine("Invalid input!");
+                    break;
+            }
+        }
+    }
 }

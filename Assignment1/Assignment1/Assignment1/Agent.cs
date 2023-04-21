@@ -21,7 +21,6 @@ namespace Assignment1
             startPosition = currentMap.startPosition;
         }
 
-        public abstract TraversalNode? Search();
-        
+        public abstract TraversalNode? Search(bool drawMap = false);
     }
 }

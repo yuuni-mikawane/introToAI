@@ -12,29 +12,38 @@ namespace Assignment1
         {
         }
 
-        public override TraversalNode? Search()
+        public override TraversalNode? Search(bool drawMap)
         {
             //initialize frontier
             frontier.AddFirst(currentMap.GetStartingNode());
 
             //search loop
-            TraversalNode currentNode = null;
+            TraversalNode? currentNode = null;
             while(frontier.Count != 0)
             {
                 currentNode = frontier.First();
                 numberOfNodes++;
-
                 //a goal is reached?
-                if (currentNode.nodeState == (int)CellState.Goal)
+                if (currentNode.isGoal)
                     break;
 
-                //mark as visited/traversed
+                //mark as visiting
                 currentMap.VisitNode(currentNode);
+
+                if (drawMap)
+                {
+                    currentMap.DrawMap();
+                }
+
+
+                //mark as visited
+                currentMap.LeaveNode(currentNode);
+
                 //remove current node
                 frontier.RemoveFirst();
 
                 //expand to adjacent nodes (children/leaf nodes)
-                foreach (TraversalNode node in currentMap.ExpandNode(currentNode))
+                foreach (TraversalNode node in currentMap.ExpandAllPossibleNodes(currentNode))
                 {
                     frontier.AddLast(node);
                 }

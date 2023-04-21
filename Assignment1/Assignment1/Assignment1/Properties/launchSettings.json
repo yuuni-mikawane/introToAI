@@ -15,6 +15,18 @@
     "AStar": {
       "commandName": "Project",
       "commandLineArgs": "RobotNav-test.txt\r\nsearchBasic\r\nAS"
+    },
+    "GUI1": {
+      "commandName": "Project",
+      "commandLineArgs": "RobotNav-test.txt\r\nsearchBasic\r\nGUI"
+    },
+    "GUI2": {
+      "commandName": "Project",
+      "commandLineArgs": "RobotNav-test2.txt\r\nsearchBasic\r\nGUI"
+    },
+    "CUS1": {
+      "commandName": "Project",
+      "commandLineArgs": "RobotNav-test.txt\r\nsearchBasic\r\nCUS1"
     }
   }
 }

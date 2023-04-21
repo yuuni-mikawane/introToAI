@@ -6,68 +6,65 @@ using System.Threading.Tasks;
 
 namespace Assignment1
 {
+    //Dijkstra
     public class Cus1Agent : Agent
     {
         public Cus1Agent(Map currentMap) : base(currentMap)
         {
         }
 
-        public override TraversalNode? Search()
+        public override TraversalNode? Search(bool drawMap)
         {
-            //find the closest goal to the start position and set as targeted goal
-            Vector2 targetGoal = currentMap.goalPositions[0];
-            foreach (Vector2 goal in currentMap.goalPositions)
-            {
-                if (Vector2.GetManhattanDistance(goal, startPosition) <
-                    Vector2.GetManhattanDistance(targetGoal, startPosition))
-                {
-                    targetGoal = goal;
-                }
-            }
-
-            //initialize frontier and the node's heuristic value
+            //initialize frontier
             frontier.AddFirst(currentMap.GetStartingNode());
-            frontier.First().heuristicValue = Vector2.GetManhattanDistance(startPosition, frontier.First().coordinate);
+            frontier.First().cost = 0;
 
             //search loop
-            TraversalNode currentNode = null;
+            TraversalNode? currentNode = null;
             while (frontier.Count != 0)
             {
-                //get the node in the frontier with minimum heuristic value (min manhattan distance)
-                int minHeuristicInFrontier = -1;
+                int minCost = int.MaxValue;
                 foreach (TraversalNode node in frontier)
                 {
-                    if (minHeuristicInFrontier == -1)
+                    if (minCost > node.cost)
                     {
                         currentNode = node;
-                        minHeuristicInFrontier = node.heuristicValue;
-                    }
-                    else if (minHeuristicInFrontier > node.heuristicValue)
-                    {
-                        currentNode = node;
-                        minHeuristicInFrontier = node.heuristicValue;
+                        minCost = node.cost;
                     }
                 }
                 numberOfNodes++;
-
                 //a goal is reached?
-                if (currentNode.nodeState == (int)CellState.Goal)
+                if (currentNode!.isGoal)
                     break;
 
-                //mark as visited/traversed on the map
+                //mark as visiting
                 currentMap.VisitNode(currentNode);
+
+                if (drawMap)
+                {
+                    currentMap.DrawMap();
+                }
+
+                //mark as visited
+                currentMap.LeaveNode(currentNode);
+
                 //remove current node
-                frontier.Remove(currentNode);
+                frontier.RemoveFirst();
 
                 //expand to adjacent nodes (children/leaf nodes)
-                foreach (TraversalNode node in currentMap.ExpandNode(currentNode))
+                foreach (TraversalNode node in currentMap.ExpandAllPossibleNodes(currentNode))
                 {
-                    node.heuristicValue = Vector2.GetManhattanDistance(node.coordinate, targetGoal);
+                    //calculate new cost
+                    if (node.parent != null)
+                    {
+                        node.cost += node.parent.cost;
+                    }
                     frontier.AddLast(node);
                 }
             }
 
             return currentNode;
         }
+
     }
 }
