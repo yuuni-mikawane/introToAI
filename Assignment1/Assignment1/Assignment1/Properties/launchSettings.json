@@ -2,31 +2,35 @@
   "profiles": {
     "GBFS": {
       "commandName": "Project",
-      "commandLineArgs": "RobotNav-test.txt\r\nsearchBasic\r\nGBFS"
+      "commandLineArgs": "RobotNav-test.txt\r\nGBFS"
     },
     "BFS": {
       "commandName": "Project",
-      "commandLineArgs": "RobotNav-test.txt\r\nsearchBasic\r\nBFS"
+      "commandLineArgs": "RobotNav-test.txt\r\nBFS"
     },
     "DFS": {
       "commandName": "Project",
-      "commandLineArgs": "RobotNav-test.txt\r\nsearchBasic\r\nDFS"
+      "commandLineArgs": "RobotNav-test.txt\r\nDFS"
     },
     "AStar": {
       "commandName": "Project",
-      "commandLineArgs": "RobotNav-test.txt\r\nsearchBasic\r\nAS"
+      "commandLineArgs": "RobotNav-test.txt\r\nAS"
     },
     "GUI1": {
       "commandName": "Project",
-      "commandLineArgs": "RobotNav-test.txt\r\nsearchBasic\r\nGUI"
+      "commandLineArgs": "RobotNav-test.txt\r\nGUI"
     },
     "GUI2": {
       "commandName": "Project",
-      "commandLineArgs": "RobotNav-test2.txt\r\nsearchBasic\r\nGUI"
+      "commandLineArgs": "RobotNav-test2.txt\r\nGUI"
     },
     "CUS1": {
       "commandName": "Project",
-      "commandLineArgs": "RobotNav-test.txt\r\nsearchBasic\r\nCUS1"
+      "commandLineArgs": "RobotNav-test.txt\r\nCUS1"
+    },
+    "GUI3": {
+      "commandName": "Project",
+      "commandLineArgs": "RobotNav-test3.txt\r\nGUI"
     }
   }
 }

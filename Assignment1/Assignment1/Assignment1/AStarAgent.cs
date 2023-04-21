@@ -30,7 +30,7 @@ namespace Assignment1
 
             //initialize frontier and the start node's cost and heuristic value
             frontier.AddFirst(currentMap.GetStartingNode());
-            frontier.First().heuristicValue = Vector2.GetManhattanDistance(startPosition, frontier.First().coordinate);
+            frontier.First().heuristicValue = Vector2.GetEuclideanDistance(startPosition, frontier.First().coordinate);
             frontier.First().cost = 0;
 
             //initialize the closed list which keeps track of reachable nodes and their current optimal cost to reach

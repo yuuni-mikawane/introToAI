@@ -5,6 +5,7 @@ class MainClass
 {
     static void Main(string[] args)
     {
+        
         //reading content from text file
         string path = args[0];
         StreamReader reader = new StreamReader(path);
@@ -21,30 +22,30 @@ class MainClass
         bool GUIMode = false;
 
         //search option for BFS
-        if (args[2] == "BFS")
+        if (args[1] == "BFS")
         {
             agent = new BFSAgent(map);
         }
         //DFS
-        else if (args[2] == "DFS")
+        else if (args[1] == "DFS")
         {
             agent = new DFSAgent(map);
         }
         //GBFS
-        else if (args[2] == "GBFS")
+        else if (args[1] == "GBFS")
         {
             agent = new GBFSAgent(map);
         }
         //AStar
-        else if (args[2] == "AS")
+        else if (args[1] == "AS")
         {
             agent = new AStarAgent(map);
         }
-        else if (args[2] == "CUS1")
+        else if (args[1] == "CUS1")
         {
             agent = new Cus1Agent(map);
         }
-        else if (args[2] == "CUS2")
+        else if (args[1] == "CUS2")
         {
             agent = new Cus2Agent(map);
         }
@@ -54,6 +55,8 @@ class MainClass
             GUIMode = true;
         }
 
+        Console.Clear();
+
         //basic searches with no GUI
         if (!GUIMode)
         {
@@ -62,7 +65,7 @@ class MainClass
             numberOfNodes = agent.numberOfNodes;
 
             //result printing
-            Console.WriteLine(path + " " + args[2] + " NodeCount:" + numberOfNodes);
+            Console.WriteLine(path + " " + args[1] + " NodeCount:" + numberOfNodes);
             if (result != null && result.isGoal)
             {
                 PrintPathText(result);

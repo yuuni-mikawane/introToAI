@@ -195,7 +195,8 @@ namespace Assignment1
         public void VisitNode(TraversalNode node)
         {
             nodeTraversed++;
-            cellsState[node.coordinate.x, node.coordinate.y] = (int)CellState.Visiting;
+            if (node.nodeState != (int)CellState.Start)
+                cellsState[node.coordinate.x, node.coordinate.y] = (int)CellState.Visiting;
         }
 
         public void MarkNodeAs(TraversalNode node, CellState state)
@@ -205,17 +206,21 @@ namespace Assignment1
 
         public void LeaveNode(TraversalNode node)
         {
-            cellsState[node.coordinate.x, node.coordinate.y] = (int)CellState.Visited;
+            if (node.nodeState != (int)CellState.Start)
+                cellsState[node.coordinate.x, node.coordinate.y] = (int)CellState.Visited;
         }
 
         public void MarkNodeAsSolution(TraversalNode node)
         {
-            cellsState[node.coordinate.x, node.coordinate.y] = (int)CellState.Solution;
+            if (cellsState[node.coordinate.x, node.coordinate.y] != (int)CellState.Start &&
+                cellsState[node.coordinate.x, node.coordinate.y] != (int)CellState.Goal)
+                cellsState[node.coordinate.x, node.coordinate.y] = (int)CellState.Solution;
         }
 
         public void MarkNodeAsExplored(TraversalNode node)
         {
-            if (cellsState[node.coordinate.x, node.coordinate.y] != (int)CellState.Visited)
+            if (cellsState[node.coordinate.x, node.coordinate.y] != (int)CellState.Visited &&
+                cellsState[node.coordinate.x, node.coordinate.y] != (int)CellState.Goal)
                 cellsState[node.coordinate.x, node.coordinate.y] = (int)CellState.Explored;
         }
 
@@ -246,12 +251,6 @@ namespace Assignment1
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.Write("O");
-                        Console.ForegroundColor = ConsoleColor.White;
-                    }
-                    else if (cellsState[j, i] == (int)CellState.Start)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write("S");
                         Console.ForegroundColor = ConsoleColor.White;
                     }
                     else if (cellsState[j, i] == (int)CellState.Visited)
@@ -299,6 +298,27 @@ namespace Assignment1
             Console.Write("\nNode expanded: " + nodeExpanded);
             Console.Write("\nNode traversed: " + nodeTraversed);
             Console.Write("\nPath length: " + pathLength);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("\nS: start cell; ");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("O: goal cell; ");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("-: traversable cells; ");
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.BackgroundColor = ConsoleColor.Green;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("*");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Write(": current node; ");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("*: visited nodes; ");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Write("?: expanded nodes; ");
+            Console.ForegroundColor = ConsoleColor.White;
             Thread.Sleep(delay);
         }
 
